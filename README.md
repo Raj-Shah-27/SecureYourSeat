@@ -26,7 +26,7 @@ A fully normalized relational database system for a movie ticket booking platfor
 - Foreign keys with **ON DELETE CASCADE** and **ON UPDATE CASCADE**
 - Composite primary keys in many-to-many relations (e.g., genres, languages)
 
-📄 See [`docs/Normalization_Proofs.pdf`](docs/Normalization_Proofs.pdf) for detailed normalization proofs and functional dependencies.
+📄 See [`Normalization_Proofs.pdf`](Normalization_Proofs.pdf) for detailed normalization proofs and functional dependencies.
 
 ---
 
@@ -72,7 +72,7 @@ JOIN movie m ON s.cbfcno = m.cbfcno
 WHERE m.runtime > 100;
 ```
 
-And many more in [`queries/SQL_Queries.sql`](queries/SQL_Queries.sql)
+And many more in [`SQL_Queries.sql`](SQL_Queries.sql)
 
 ---
 
