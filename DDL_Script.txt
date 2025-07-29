@@ -1,0 +1,107 @@
+CREATE SCHEMA SecureYourSeat;
+SET SEARCH_PATH TO SecureYourSeat;
+
+CREATE TABLE city(
+	cityid char(3) primary key,
+	name varchar(50) not null,
+	state varchar(50) not null
+);
+
+CREATE TABLE movie (
+ 	cbfcno char(15) primary key,
+	title varchar(100) not null,
+	description text,
+	runtime smallint,
+	rating numeric(2,1)
+);
+
+CREATE TABLE customer (
+	uid char(10) primary key,
+	fname varchar(20) not null,
+	lname varchar(20),
+	contact numeric(10) not null,
+	dob date,
+	email varchar(40),
+	password varchar(20) not null
+);
+
+CREATE TABLE cinema(
+	cinemaid char(6) primary key,
+	name varchar(20) not null,
+	no_of_halls smallint,
+	cityid char(3),
+	FOREIGN KEY (cityid) REFERENCES city(cityid)
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE cinemaHall(
+	hallid varchar(50) primary key,
+	totalSeats smallint,
+	cinemaid char(6) not null,
+	FOREIGN KEY (cinemaid) REFERENCES cinema(cinemaid)
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE cinemaSeats(
+	seatno char(3),
+	hallid varchar(50),
+	totalSeat smallint,
+	FOREIGN KEY (hallid) REFERENCES cinemaHall(hallid)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+		primary key(seatno,hallid)
+);
+
+CREATE TABLE shows(
+	showid varchar(50) primary key,
+	day date not null,
+	timings time not null,
+	cbfcno varchar(50),
+	hallid varchar(50),
+	FOREIGN KEY (hallid) REFERENCES cinemaHall(hallid)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (cbfcno) REFERENCES movie(cbfcno)
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE payment(
+	paymentid char(10) primary key,
+	amount int,
+	uid char(10) not null,
+	mode varchar(20),
+	timing timestamp,
+	FOREIGN KEY (uid) REFERENCES customer(uid)
+		ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+CREATE TABLE eticket(
+	ticketno char(8) primary key,
+	paymentid char(10) not null,
+	FOREIGN KEY (paymentid) REFERENCES payment(paymentid)
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE showseat(
+	showseatid char(3),
+	showid varchar(50),
+	status varchar(6) DEFAULT 'UNSOLD',
+	price smallint,
+	ticketno char(8) DEFAULT NULL,
+
+	FOREIGN KEY (showid) REFERENCES shows(showid)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (ticketno) REFERENCES eticket(ticketno)
+		ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE language(
+	cbfcno varchar(15),
+	lang varchar(30),
+	primary key(cbfcno,lang),
+	foreign key (cbfcno) references movie(cbfcno)
+);
+CREATE TABLE genres(
+	cbfcno varchar(15),
+	genre varchar(30),
+	primary key(cbfcno,genre),
+	foreign key (cbfcno) references movie(cbfcno)
+);
