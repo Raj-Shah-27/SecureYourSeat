@@ -72,7 +72,7 @@ JOIN movie m ON s.cbfcno = m.cbfcno
 WHERE m.runtime > 100;
 ```
 
-And many more in [`SQL_Queries.sql`](SQL_Queries.sql)
+And many more in [`SQL_Queries.txt`](SQL_Queries.txt)
 
 ---
 
